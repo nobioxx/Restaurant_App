@@ -98,15 +98,19 @@ label.pack()
 
 #========================================database==============================
 
+
+
+
+
+
 def database():
     global conn, cursor
-    conn = sqlite3.connect("Order.db")
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE 'listorder'(Name TEXT, Phone TEXT)")
-    cursor.execute("INSERT INTO order(Name, Phone,Total) VALUES (y_name,y_number,)")
+    conn= sqlite3.connect("Order.db")
+    cursor=conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS 'orderlist'(Name, Phone, Items)")
+    cursor.execute("INSERT INTO 'orderlist'(Name, Phone, Items) VALUES (?,?,?)"(y_name.get(),y_phone.get(),Total_cost.get()))
     conn.commit()
-    
-    
+    conn.close()
     
 
 
@@ -338,8 +342,8 @@ def Costof():
     subtotal=(costofitem)+(ST)
     SubTotal.set(subtotal)
 
-    T=str('%.2f'%(costofitem+gs1+gst2+ST))
-    TotalCost.set(T)
+    Total_cost=str('%.2f'%(costofitem+gs1+gst2+ST))
+    TotalCost.set(Total_cost)
     Receipt()
 
 
@@ -736,12 +740,12 @@ txtYourname = Entry(f1bb, font=('arial',10), bd=2, width=25, bg="#FEB642",justif
 txtYourname.grid(row=3, column=0, sticky=W)
 
 ynumber=Label(f1bb, font=('Courier',10,'bold'),bg="#FEB642",anchor='w',text="Phone Number\t").grid(row=4,column=0,sticky=W)
-txtYourname = Entry(f1bb, font=('arial',10), bd=2, width=25, bg="#FEB642",justify='left',textvariable=y_number,state=NORMAL)
-txtYourname.grid(row=5, column=0, sticky=W)
+txtYournumber = Entry(f1bb, font=('arial',10), bd=2, width=25, bg="#FEB642",justify='left',textvariable=y_number,state=NORMAL)
+txtYournumber.grid(row=5, column=0, sticky=W)
 
 yemail=Label(f1bb, font=('Courier',10,'bold'),bg="#FEB642",anchor='w',text="Email\t").grid(row=6,column=0,sticky=W)
-txtYourname = Entry(f1bb, font=('arial',10), bd=2, width=25, bg="#FEB642",justify='left',textvariable=y_email,state=NORMAL)
-txtYourname.grid(row=7, column=0, sticky=W)
+txtYouremail = Entry(f1bb, font=('arial',10), bd=2, width=25, bg="#FEB642",justify='left',textvariable=y_email,state=NORMAL)
+txtYouremail.grid(row=7, column=0, sticky=W)
 #=============================information===========================================
 
 
@@ -764,5 +768,6 @@ txtdev=Label(fa2,fg="black", font=("Time",8),text="Deepjyoti Dutta").grid(row=1,
 
 
 root.mainloop()
+
 
 
