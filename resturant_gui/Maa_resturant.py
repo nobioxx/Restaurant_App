@@ -99,7 +99,8 @@ label.pack()
 #========================================database==============================
 
 
-
+y_name=StringVar()
+y_number=StringVar()
 
 
 
@@ -107,12 +108,23 @@ def database():
     global conn, cursor
     conn= sqlite3.connect("Order.db")
     cursor=conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS 'orderlist'(Name, Phone, Items)")
-    cursor.execute("INSERT INTO 'orderlist'(Name, Phone, Items) VALUES (?,?,?)"(y_name.get(),y_phone.get(),Total_cost.get()))
+    cursor.execute("CREATE TABLE IF NOT EXISTS 'orderlist'(Name, Phone,Bill)")
+    cursor.execute("INSERT INTO 'orderlist'(Name, Phone,Bill) VALUES (?,?,?);",(y_name.get(),y_number.get(),Reciept_ref.get()))
     conn.commit()
     conn.close()
     
+def view_database():
+    conn=sqlite3.connect("Order.db")
+    cursor=conn.cursor()
+    cursor.execute("SELECT * from orderlist")
+    for row in cursor:
+        content=Label(fta, text = row, font='arial')
+        content.pack(pady=30,padx=20)
+    conn.close()
 
+
+def view():
+    view_database()
 
 #==========================================Methods    ==========================
 
@@ -456,9 +468,7 @@ def checkbtn():
 
 def Receipt():
     txtReceipt.delete("1.0",END)
-    x= random.randint(10908,500876)
-    randomRef = str(x)
-    Reciept_ref.set("BILL"+randomRef)
+    Reciept_ref.set("BILL "+randomRef)
 
 
     txtReceipt.insert(END,'Receipt Ref:\t\t\t'+Reciept_ref.get()+'\t\t'+ Dateoforder.get()+"\n")
@@ -503,13 +513,13 @@ def Receipt():
     txtReceipt.insert(END,'SGST:\t\t\t\t'+"₹"+sgst.get()+'\t\t\t'+"\n")
     txtReceipt.insert(END,'Total:\t\t\t\t'+"₹"+TotalCost.get()+'\t\t\t'+"\n")
 
-
+billnumber= random.randint(1,100)
+randomRef = str(billnumber)
+Reciept_ref.set("BILL "+randomRef)
 
 def orderItem():
     txtReceipt.delete("1.0",END)
-    x= random.randint(10908,500876)
-    randomRef = str(x)
-    Reciept_ref.set("BILL"+randomRef)
+    
 
 
     txtReceipt.insert(END,'Receipt Ref:\t\t\t'+Reciept_ref.get()+'\t\t'+ Dateoforder.get()+"\n")
@@ -756,7 +766,7 @@ txtYouremail.grid(row=7, column=0, sticky=W)
 #=============================button===========================================
 
 btnTotal=Button(fa2,padx=12,pady=1,bd=1,fg="black",font=('arial',12,'bold'),width=4,height=1, text="Total",command= Costof).grid(row=0,column=0)
-btnRecipt=Button(fa2,padx=12,pady=1,bd=1,fg="black",font=('arial',12,'bold'),width=6,height=1, text="View",command= database).grid(row=0,column=1)
+btnRecipt=Button(fa2,padx=12,pady=1,bd=1,fg="black",font=('arial',12,'bold'),width=6,height=1, text="View").grid(row=0,column=1)
 btnOrder=Button(fa2,padx=12,pady=1,bd=1,fg="black",font=('arial',12,'bold'),width=4,height=1, text="Order",command=orderItem).grid(row=0,column=2)
 btnReset=Button(fa2,padx=12,pady=1,bd=1,fg="black",font=('arial',12,'bold'),width=4,height=1, text="Reset",command=reset).grid(row=0,column=3)
 btnExit=Button(fa2,padx=12,pady=1,bd=1,fg="black",font=('arial',12,'bold'),width=4,height=1, text="Exit",command= quit).grid(row=0,column=4)
@@ -768,6 +778,5 @@ txtdev=Label(fa2,fg="black", font=("Time",8),text="Deepjyoti Dutta").grid(row=1,
 
 
 root.mainloop()
-
 
 
